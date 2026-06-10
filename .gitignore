@@ -1,22 +1,36 @@
-venv/
-.venv/
-
+# ── Python ──────────────────────────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
 
+# ── Virtual environments ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Saved model artefacts ─────────────────────────────────────────────────────
+saved_model/
+
+# ── Jupyter / IPython ────────────────────────────────────────────────────────
 .ipynb_checkpoints/
+*.ipynb
 
+# ── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-.streamlit/
+# ── Streamlit ────────────────────────────────────────────────────────────────
+.streamlit/secrets.toml
 
-*.keras
-*.h5
-*.ckpt
-
-models/
-
-.env
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo

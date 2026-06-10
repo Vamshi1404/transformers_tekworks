@@ -209,7 +209,7 @@ def get_model():
     return load_saved_model()
 
 # ── Check model exists ───────────────────────────────────────────────────────
-model_ready = os.path.exists("saved_model/en_te_transformer")
+model_ready = os.path.exists("saved_model/en_te_transformer.keras")
 
 # ── Hero ────────────────────────────────────────────────────────────────────
 st.markdown(
@@ -253,21 +253,37 @@ st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 col_left, col_right = st.columns([1, 1], gap="large")
 
 with col_left:
+    if "user_input" not in st.session_state:
+        st.session_state.user_input = ""
+
     st.markdown('<div class="card-label">English sentence</div>', unsafe_allow_html=True)
     user_input = st.text_area(
         label="",
         placeholder="Type an English sentence…",
         height=120,
         label_visibility="collapsed",
+        key="user_input",
     )
 
     # Quick-fill suggestions
-    suggestions = random.sample([e for e, _ in pairs], k=min(4, len(pairs)))
+    if "suggestions" not in st.session_state:
+        st.session_state.suggestions = random.sample([e for e, _ in pairs], k=min(4, len(pairs)))
+
     st.markdown('<p class="tip">Try one of these →</p>', unsafe_allow_html=True)
     sg_cols = st.columns(2)
-    for idx, sug in enumerate(suggestions):
-        if sg_cols[idx % 2].button(sug, key=f"sug_{idx}"):
-            user_input = sug
+
+    def set_suggestion(sug):
+        st.session_state.user_input = sug
+        st.session_state.translate_now = True
+
+    for idx, sug in enumerate(st.session_state.suggestions):
+        sg_cols[idx % 2].button(
+            sug,
+            key=f"sug_{idx}",
+            on_click=set_suggestion,
+            args=(sug,),
+            use_container_width=True,
+        )
 
     st.markdown("")
     translate_btn = st.button("✦  Translate", use_container_width=True)
@@ -275,13 +291,17 @@ with col_left:
 with col_right:
     st.markdown('<div class="card-label">Telugu translation</div>', unsafe_allow_html=True)
 
+    should_translate = translate_btn or st.session_state.get("translate_now", False)
+    if "translate_now" in st.session_state:
+        del st.session_state.translate_now
+
     if not model_ready:
         st.warning(
             "⚠️  No trained model found.  \n"
             "Run `python transformer_analysis.py` to train and save the model, then refresh.",
             icon="🛠️",
         )
-    elif translate_btn and user_input.strip():
+    elif should_translate and user_input.strip():
         with st.spinner("Translating…"):
             model, sv, tv = get_model()
             result = None

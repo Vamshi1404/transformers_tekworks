@@ -123,13 +123,13 @@ RAW_DATA = [
 # Hyper-parameters
 # ---------------------------------------------------------------------------
 
-VOCAB_SIZE      = 3000
+VOCAB_SIZE      = 1000
 SEQUENCE_LENGTH = 14
-EMBED_DIM       = 256
-DENSE_DIM       = 512
-NUM_HEADS       = 8
+EMBED_DIM       = 64
+DENSE_DIM       = 128
+NUM_HEADS       = 4
 DROPOUT_RATE    = 0.1
-EPOCHS          = 300
+EPOCHS          = 200
 BATCH_SIZE      = 8
 
 MODEL_PATH      = "saved_model/en_te_transformer.keras"
@@ -324,7 +324,7 @@ def train_and_save():
     )
 
     model.save(MODEL_PATH)
-    print(f"\n✅  Model saved to {MODEL_PATH}")
+    print(f"\n[SUCCESS] Model saved to {MODEL_PATH}")
     return model, history
 
 
@@ -413,4 +413,4 @@ if __name__ == "__main__":
     model_loaded, sv, tv = load_saved_model()
     print("\n--- Smoke-test translations ---")
     for t in tests:
-        print(f"  {t!r:35s} → {translate(t, model_loaded, sv, tv)!r}")
+        print(f"  {t!r:35s} -> {translate(t, model_loaded, sv, tv)!r}")

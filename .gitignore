@@ -16,7 +16,7 @@ env/
 ENV/
 
 # ── Saved model artefacts ─────────────────────────────────────────────────────
-saved_model/
+# saved_model/
 
 # ── Jupyter / IPython ────────────────────────────────────────────────────────
 .ipynb_checkpoints/

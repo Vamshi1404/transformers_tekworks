@@ -132,7 +132,7 @@ DROPOUT_RATE    = 0.1
 EPOCHS          = 300
 BATCH_SIZE      = 8
 
-MODEL_PATH      = "saved_model/en_te_transformer"
+MODEL_PATH      = "saved_model/en_te_transformer.keras"
 VECTORIZER_PATH = "saved_model/vectorizers.pkl"
 
 # ---------------------------------------------------------------------------
